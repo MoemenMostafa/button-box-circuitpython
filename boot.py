@@ -1,6 +1,7 @@
 # boot.py
 import usb_hid
-
+import storage, usb_cdc
+import board, digitalio
 # This is only one example of a gamepad descriptor.
 # It may not suit your needs, or be supported on your host computer.
 
@@ -30,8 +31,13 @@ gamepad = usb_hid.Device(
 )
 
 usb_hid.enable(
-    (usb_hid.Device.KEYBOARD,
-     usb_hid.Device.MOUSE,
-     usb_hid.Device.CONSUMER_CONTROL,
+    (usb_hid.Device.CONSUMER_CONTROL,
      gamepad)
 )
+
+button = digitalio.DigitalInOut(board.GP22)
+button.pull = digitalio.Pull.UP
+
+if button.value:
+    storage.disable_usb_drive()
+    usb_cdc.disable()
