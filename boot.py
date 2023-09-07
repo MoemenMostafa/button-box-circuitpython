@@ -35,6 +35,7 @@ usb_hid.enable(
      gamepad)
 )
 
+# adding a way out of the serial and usb disable (by pressing the button connected to GP22 usb drive and serial will be enabled)
 button = digitalio.DigitalInOut(board.GP22)
 button.pull = digitalio.Pull.UP
 
