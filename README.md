@@ -52,9 +52,9 @@ Make sure you have CircuitPython installed on your Raspberry Pi Pico and the req
 
 2. Install CircuitPython on your Raspberry Pi Pico if not already installed.
 
-3. Install the required libraries (`adafruit_hid` and `keypad`) on your Raspberry Pi Pico.
+3. Install the required libraries (`adafruit_hid`) on your Raspberry Pi Pico lib folder.
 
-4. Upload the provided Python script (e.g., `code.py`) to your Raspberry Pi Pico using your preferred method.
+4. Upload the provided Python script to your Raspberry Pi Pico root using your preferred method.
 
 ## Usage
 
