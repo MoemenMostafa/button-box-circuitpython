@@ -11,8 +11,8 @@ gp = Gamepad(usb_hid.devices)
 
 # KeyMatrix setup
 km = keypad.KeyMatrix(
-    row_pins=(board.GP2, board.GP1),
-    column_pins=(board.GP9, board.GP8, board.GP4, board.GP6, board.GP7, board.GP0, board.GP5),
+    row_pins=(board.GP0, board.GP1),
+    column_pins=(board.GP2, board.GP3, board.GP4, board.GP5, board.GP6, board.GP7, board.GP8),
 )
 
 
@@ -20,7 +20,7 @@ km = keypad.KeyMatrix(
 encoder_pins = [(board.GP10, board.GP11), (board.GP13, board.GP14), (board.GP16, board.GP17), (board.GP19, board.GP20)]
 encoders = [rotaryio.IncrementalEncoder(pinA, pinB) for pinB, pinA in encoder_pins]
 
-encoder_buttons_pins = [board.GP12, board.GP15, board.GP18, board.GP22]
+encoder_buttons_pins = [board.GP12, board.GP15, board.GP18, board.GP21]
 encoder_buttons = [digitalio.DigitalInOut(pin) for pin in encoder_buttons_pins]
 for encoder_button in encoder_buttons:
     encoder_button.direction = digitalio.Direction.INPUT
