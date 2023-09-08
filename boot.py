@@ -36,7 +36,7 @@ usb_hid.enable(
 )
 
 # adding a way out of the serial and usb disable (by pressing the button connected to GP22 usb drive and serial will be enabled)
-button = digitalio.DigitalInOut(board.GP22)
+button = digitalio.DigitalInOut(board.GP21)
 button.pull = digitalio.Pull.UP
 
 if button.value:
