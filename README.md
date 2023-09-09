@@ -3,6 +3,8 @@
 ![button-box](https://github.com/MoemenMostafa/Resources/blob/main/IMG_20230909_095557.jpg)
 
 A DIY button box project using a Raspberry Pi Pico microcontroller. This project allows you to create a custom button input device with support for buttons, encoders, and encoder buttons.
+## Youtube Video
+- [Step by Step build](https://youtu.be/HFbsGOOQnbs?si=SjRzzYc0B6gCzq3M)
 
 ## Table of Contents
 
