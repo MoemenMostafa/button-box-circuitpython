@@ -44,7 +44,6 @@ This project relies on the following software libraries:
 
 - [CircuitPython](https://circuitpython.org/)
 - [adafruit_hid Library](https://circuitpython.readthedocs.io/projects/hid/en/latest/)
-- [Keypad Library](https://circuitpython.readthedocs.io/projects/keypad/en/latest/)
 
 Make sure you have CircuitPython installed on your Raspberry Pi Pico and the required libraries available.
 
