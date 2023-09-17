@@ -76,7 +76,7 @@ while True:
             print("Encoder {}: Position = {}".format(idx, position))
             print("encoder_keycode = {}".format(encoder_keycodes[idx][position + 1]))
             keyPress(encoder_keycodes[idx][position + 1])
-            time.sleep(0.05) # adding a 50ms sleep before key release to allow time to discover
+            time.sleep(0.1) # adding a 100ms sleep before key release to allow time to discover
             keyRelease(encoder_keycodes[idx][position + 1])
     # Encoder Buttons reading and handling
     for idx, encoder_button in enumerate(encoder_buttons):
