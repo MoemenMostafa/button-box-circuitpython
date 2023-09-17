@@ -67,12 +67,17 @@ while True:
     # Encoders reading and handling
     for idx, encoder in enumerate(encoders):
         if encoder.position != 0:
-            print("Encoder {}: Position = {}".format(idx, encoder.position))
-            print("encoder_keycode = {}".format(encoder_keycodes[idx][encoder.position + 1]))
-            keyPress(encoder_keycodes[idx][encoder.position + 1])
-            keyRelease(encoder_keycodes[idx][encoder.position + 1])
-            encoder.position = 0
-
+            if encoder.position > 0:
+                encoder.position = 1
+            if encoder.position < 0:
+                encoder.position = -1
+            position = encoder.position # copy the encoder position to set it to zero in next line
+            encoder.position = 0 # setting the encoder position to 0 before the sleep to protect againest rage clicks
+            print("Encoder {}: Position = {}".format(idx, position))
+            print("encoder_keycode = {}".format(encoder_keycodes[idx][position + 1]))
+            keyPress(encoder_keycodes[idx][position + 1])
+            time.sleep(0.05) # adding a 50ms sleep before key release to allow time to discover
+            keyRelease(encoder_keycodes[idx][position + 1])
     # Encoder Buttons reading and handling
     for idx, encoder_button in enumerate(encoder_buttons):
         if not encoder_button.value and not encoder_button_state[idx]:
