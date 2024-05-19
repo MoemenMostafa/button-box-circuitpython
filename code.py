@@ -1,93 +1,127 @@
 import board
-import digitalio
-import rotaryio
+import analogio
 import time
+import digitalio
 import usb_hid
-import keypad
-from hid_gamepad import Gamepad
-
-# Set up the HID Gamepad
-gp = Gamepad(usb_hid.devices)
-
-# KeyMatrix setup
-km = keypad.KeyMatrix(
-    row_pins=(board.GP0, board.GP1),
-    column_pins=(board.GP2, board.GP3, board.GP4, board.GP5, board.GP6, board.GP7, board.GP8),
-)
+from hid_shifter import Gamepad
 
 
-# Encoders setup
-encoder_pins = [(board.GP10, board.GP11), (board.GP13, board.GP14), (board.GP16, board.GP17), (board.GP19, board.GP20)]
-encoders = [rotaryio.IncrementalEncoder(pinA, pinB) for pinB, pinA in encoder_pins]
+# Set up the Multiplixer
+hallsens1 = digitalio.DigitalInOut(board.GP8)
+hallsens1.direction = digitalio.Direction.INPUT
 
-encoder_buttons_pins = [board.GP12, board.GP15, board.GP18, board.GP21]
-encoder_buttons = [digitalio.DigitalInOut(pin) for pin in encoder_buttons_pins]
-for encoder_button in encoder_buttons:
-    encoder_button.direction = digitalio.Direction.INPUT
-    encoder_button.pull = digitalio.Pull.UP
+analog = analogio.AnalogIn(board.GP26)
 
-# Define the keycodes for the buttons
-button_keycodes = [
-    1, 2, 3, 4, 5, 6, 7,
-    8, 9, 10, 11, 12, 13, 14
-]
+digital1 = digitalio.DigitalInOut(board.GP0)
+digital1.direction = digitalio.Direction.OUTPUT
 
-# Define the keycodes for the encoders
-encoder_keycodes = [
-    [15, 16, 17],
-    [18, 19, 20],
-    [21, 22, 23],
-    [24, 25, 26]
-]
+digital2 = digitalio.DigitalInOut(board.GP1)
+digital2.direction = digitalio.Direction.OUTPUT
 
-# Initialize encoder buttons state list with False value
-encoder_button_state = [False for i in range(len(encoder_buttons))]
+digital3 = digitalio.DigitalInOut(board.GP2)
+digital3.direction = digitalio.Direction.OUTPUT
+
+# End of multiplixer setup
+
+# Set up Variables
+hall1 = 0
+hall2 = 0
+hall3 = 0
+hall4 = 0
+hall5 = 0
+hall6 = 0
+hall7 = 0
+hall8 = 0
+gear = 0
+prevGear = 0
+
+# Set up the HID Shifter
+shifter = Gamepad(usb_hid.devices)
 
 # Keypress and release
-def keyPress(key):
-    gp.press_buttons(key)
+def shiftIn(gear):
+    shifter.press_buttons(gear)
+    print(gear)
 
-def keyRelease(key):
-    gp.release_buttons(key)
+def shiftOut():
+    shifter.release_all_buttons()
 
-# Main loop
 while True:
-    # KeyMatrix reading and handling
-    event = km.events.get()
-    if event:
-        if event.pressed:
-            print(event)
-            keyPress(button_keycodes[event.key_number])
-        if event.released:
-            print(event)
-            keyRelease(button_keycodes[event.key_number])
+    sleepTime = 0.00125
+    time.sleep(sleepTime)
+    digital1.value = False
+    digital2.value = False
+    digital3.value = False
+    hall1 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = True
+    digital2.value = False
+    digital3.value = False
+    hall2 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = False
+    digital2.value = True
+    digital3.value = False
+    hall3 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = True
+    digital2.value = True
+    digital3.value = False
+    hall4 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = False
+    digital2.value = False
+    digital3.value = True
+    hall5 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = True
+    digital2.value = False
+    digital3.value = True
+    hall6 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = False
+    digital2.value = True
+    digital3.value = True
+    hall7 = analog.value
+
+    time.sleep(sleepTime)
+    digital1.value = True
+    digital2.value = True
+    digital3.value = True
+    hall8 = analog.value
+
+#     print(hall1, hall2, hall3, hall4, hall5, hall6, hall7, hall8)
+
+    threshold = 27000
+
+    if hall8 < threshold + 2000:
+        gear = 8
+    elif hall7 < threshold:
+        gear = 1
+    elif hall3 < threshold:
+        gear = 2
+    elif hall5 < threshold:
+        gear = 5
+    elif hall6 < threshold:
+        gear = 3
+    elif hall1 < threshold:
+        gear = 6
+    elif hall2 < threshold:
+        gear = 4
+    else:
+        gear = 0
 
 
+    if gear != prevGear:
+        shiftOut()
+        if gear > 0:
+            shiftIn(gear)
 
-    # Encoders reading and handling
-    for idx, encoder in enumerate(encoders):
-        if encoder.position != 0:
-            if encoder.position > 0:
-                encoder.position = 1
-            if encoder.position < 0:
-                encoder.position = -1
-            position = encoder.position # copy the encoder position to set it to zero in next line
-            encoder.position = 0 # setting the encoder position to 0 before the sleep to protect againest rage clicks
-            print("Encoder {}: Position = {}".format(idx, position))
-            print("encoder_keycode = {}".format(encoder_keycodes[idx][position + 1]))
-            keyPress(encoder_keycodes[idx][position + 1])
-            time.sleep(0.1) # adding a 100ms sleep before key release to allow time to discover
-            keyRelease(encoder_keycodes[idx][position + 1])
-    # Encoder Buttons reading and handling
-    for idx, encoder_button in enumerate(encoder_buttons):
-        if not encoder_button.value and not encoder_button_state[idx]:
-            print("encoder_buttons {} Pressed".format(idx))
-            keyPress(encoder_keycodes[idx][1])
-            encoder_button_state[idx] = True
-        if encoder_button.value and encoder_button_state[idx]:
-            print("encoder_buttons {} Released".format(idx))
-            keyRelease(encoder_keycodes[idx][1])
-            encoder_button_state[idx] = False
-
-
-    time.sleep(0.01)  # Add a small delay to avoid flooding the USB connection
+    prevGear = gear
+#     print((0, gear, 8))
