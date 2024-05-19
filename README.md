@@ -1,10 +1,6 @@
-# Raspberry Pi Pico Button Box (circuitpython)
+# Raspberry Pi Zero H Shifter (circuitpython)
 
-![button-box](https://github.com/MoemenMostafa/Resources/blob/main/IMG_20230909_095557.jpg)
-
-A DIY button box project using a Raspberry Pi Pico microcontroller. This project allows you to create a custom button input device with support for buttons, encoders, and encoder buttons.
-## Youtube Video
-- [Step by Step build](https://youtu.be/HFbsGOOQnbs?si=SjRzzYc0B6gCzq3M)
+A DIY H Shifter project using a Raspberry Pi Zero microcontroller. This project allows you to create a custom H shifter input device with support for 6-7 speeds and R.
 
 ## Table of Contents
 
@@ -20,24 +16,23 @@ A DIY button box project using a Raspberry Pi Pico microcontroller. This project
 
 ## Introduction
 
-This project utilizes a Raspberry Pi Pico microcontroller to create a button box capable of simulating a gamepad or other input devices. It can be used for gaming, simulation, or any application requiring custom input controls.
+This project utilizes a Raspberry Pi Zero microcontroller and hall sensors to create the H shifter
 
 ## Features
 
-- Button support with customizable keycodes.
-- Encoder support with customizable keycodes.
-- Encoder button support with customizable keycodes.
+- 6 to 7 gears and R
 - Emulates a gamepad using the `adafruit_hid` library.
 
 ## Hardware Requirements
 
 To build this project, you will need the following hardware components:
 
-- [Raspberry Pi Pico](https://www.raspberrypi.org/products/raspberry-pi-pico/)
-- Buttons (e.g., momentary push buttons)
-- Encoders (with encoder buttons, if desired)
-- Wiring and soldering tools
-- Project enclosure or box
+- Raspberry Pi Zero
+- Hall sensors
+- Multiplexer
+- 3d printed parts
+- Custom pcb
+- 20cm aluminum pipe or metal tread with a diameter of 8mm (m8)
 - USB cable for connecting to a computer
 
 ## Software Requirements
@@ -51,17 +46,15 @@ Make sure you have CircuitPython installed on your Raspberry Pi Pico and the req
 
 ## Setup
 
-1. Connect the buttons and encoders to the Raspberry Pi Pico's GPIO pins. Refer to your wiring diagram for button and encoder pin connections.
+1. Install CircuitPython on your Raspberry Pi Zero if not already installed.
 
-2. Install CircuitPython on your Raspberry Pi Pico if not already installed.
+2. Install the required libraries (`adafruit_hid`) on your Raspberry Pi Pico lib folder.
 
-3. Install the required libraries (`adafruit_hid`) on your Raspberry Pi Pico lib folder.
-
-4. Upload the provided Python script to your Raspberry Pi Pico root using your preferred method.
+3. Upload the provided Python script to your Raspberry Pi Pico root using your preferred method.
 
 ## Usage
 
-Use the Raspberry Pi Pico button box to simulate custom input controls. The script handles button presses, encoder movements, and encoder button presses, emulating a gamepad.
+Use the Raspberry Pi Zero H shifter to simulate custom input controls. The script handles button presses emulating a gamepad.
 
 ## Customization
 
