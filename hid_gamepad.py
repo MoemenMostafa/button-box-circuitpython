@@ -32,19 +32,18 @@ class Gamepad:
         """
         self._gamepad_device = find_device(devices, usage_page=0x1, usage=0x05)
 
-        reportSize = 4;  # If changed don't forget to change it in struct.pack_into
-        
         # Reuse this bytearray to send mouse reports.
         # Typically controllers start numbering buttons at 1 rather than 0.
         # report[0] buttons 1-8 (LSB is button 1)
         # report[1] buttons 9-16
         # report[2] buttons 17-24
         # report[3] buttons 25-32
-        self._report = bytearray(bytesSize)
+        self._report = bytearray(4)
+
         # Remember the last report as well, so we can avoid sending
         # duplicate reports.
-        self._last_report = bytearray(bytesSize)
-        
+        self._last_report = bytearray(4)
+
         # Store settings separately before putting into report. Saves code
         # especially for buttons.
         self._buttons_state = 0
@@ -90,7 +89,7 @@ class Gamepad:
         If ``always`` is ``False`` (the default), send only if there have been changes.
         """
         struct.pack_into(
-            "<I", # Formate => Report_size (1 = "<B", 2 = "<H", 4 = "<I", 6 = "<Q", 8 = "<Q")
+            "<I",
             self._report,
             0,
             self._buttons_state,
