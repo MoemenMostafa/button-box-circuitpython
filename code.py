@@ -52,55 +52,55 @@ while True:
     digital1.value = False
     digital2.value = False
     digital3.value = False
-    hall1 = analog.value
+    hall1 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = True
     digital2.value = False
     digital3.value = False
-    hall2 = analog.value
+    hall2 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = False
     digital2.value = True
     digital3.value = False
-    hall3 = analog.value
+    hall3 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = True
     digital2.value = True
     digital3.value = False
-    hall4 = analog.value
+    hall4 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = False
     digital2.value = False
     digital3.value = True
-    hall5 = analog.value
+    hall5 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = True
     digital2.value = False
     digital3.value = True
-    hall6 = analog.value
+    hall6 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = False
     digital2.value = True
     digital3.value = True
-    hall7 = analog.value
+    hall7 = round(analog.value/1000)
 
     time.sleep(sleepTime)
     digital1.value = True
     digital2.value = True
     digital3.value = True
-    hall8 = analog.value
+    hall8 = round(analog.value/1000)
 
-#     print(hall1, hall2, hall3, hall4, hall5, hall6, hall7, hall8)
+    print(hall1, hall2, hall3, hall4, hall5, hall6, hall7, hall8)
 
-    threshold = 27000
+    threshold = 30
 
-    if hall8 < threshold + 2000:
+    if hall8 < threshold + 1:
         gear = 8
     elif hall7 < threshold:
         gear = 1
