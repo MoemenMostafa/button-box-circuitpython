@@ -40,10 +40,10 @@ class Gamepad:
         # report[1] buttons 9-16
         # report[2] buttons 17-24
         # report[3] buttons 25-32
-        self._report = bytearray(bytesSize)
+        self._report = bytearray(reportSize)
         # Remember the last report as well, so we can avoid sending
         # duplicate reports.
-        self._last_report = bytearray(bytesSize)
+        self._last_report = bytearray(reportSize)
         
         # Store settings separately before putting into report. Saves code
         # especially for buttons.
