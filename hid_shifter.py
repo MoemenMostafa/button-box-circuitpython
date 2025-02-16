@@ -32,17 +32,18 @@ class Gamepad:
         """
         self._gamepad_device = find_device(devices, usage_page=0x1, usage=0x05)
 
+
+        reportSize = 1;  # If changed don't forget to change it in struct.pack_into
+
+
         # Reuse this bytearray to send mouse reports.
         # Typically controllers start numbering buttons at 1 rather than 0.
         # report[0] buttons 1-8 (LSB is button 1)
-        # report[1] buttons 9-16
-        # report[2] buttons 17-24
-        # report[3] buttons 25-32
-        self._report = bytearray(4)
+        self._report = bytearray(reportSize)
 
         # Remember the last report as well, so we can avoid sending
         # duplicate reports.
-        self._last_report = bytearray(4)
+        self._last_report = bytearray(reportSize)
 
         # Store settings separately before putting into report. Saves code
         # especially for buttons.
@@ -89,7 +90,7 @@ class Gamepad:
         If ``always`` is ``False`` (the default), send only if there have been changes.
         """
         struct.pack_into(
-            "<I",
+            "<B", # Formate => Report_size (1 = "<B", 2 = "<H", 4 = "<I", 6 = "<Q", 8 = "<Q")
             self._report,
             0,
             self._buttons_state,
@@ -102,6 +103,6 @@ class Gamepad:
 
     @staticmethod
     def _validate_button_number(button):
-        if not 1 <= button <= 32:
-            raise ValueError("Button number must in range 1 to 32")
+        if not 1 <= button <= 8:
+            raise ValueError("Button number must in range 1 to 8")
         return button
