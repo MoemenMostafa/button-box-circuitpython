@@ -1,9 +1,20 @@
 # boot.py
 import usb_hid
+import supervisor
 import storage, usb_cdc
 import board, digitalio
 # This is only one example of a gamepad descriptor.
 # It may not suit your needs, or be supported on your host computer.
+
+# Set USB identification
+supervisor.set_usb_identification(
+    manufacturer="MOS",
+    product="H-Shifter Alpha",
+    vid=0x27A0,  # Optional: Replace with your desired Vendor ID
+    pid=0x0001   # Optional: Replace with your desired Product ID
+)
+usb_hid.set_interface_name("MOS H-Shifter Alpha")
+
 
 GAMEPAD_REPORT_DESCRIPTOR = bytes((
     0x05, 0x01,  # Usage Page (Generic Desktop Ctrls)
@@ -21,7 +32,6 @@ GAMEPAD_REPORT_DESCRIPTOR = bytes((
     0xC0         # End Collection
 ))
 
-usb_hid.set_interface_name("MOS H-Shifter Alpha")
 
 gamepad = usb_hid.Device(
     report_descriptor=GAMEPAD_REPORT_DESCRIPTOR,
